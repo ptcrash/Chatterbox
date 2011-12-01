@@ -24,17 +24,6 @@ public class server
   public server(int listen_port, webserver_starter to_send_message_to) {
     message_to = to_send_message_to;
     port = listen_port;
-
-//this makes a new thread, as mentioned before,it's to keep gui in
-//one thread, server in another. You may argue that this is totally
-//unnecessary, but we are gonna have this on the web so it needs to
-//be a bit macho! Another thing is that real pro webservers handles
-//each request in a new thread. This server dosen't, it handles each
-//request one after another in the same thread. This can be a good
-//assignment!! To redo this code so that each request to the server
-//is handled in its own thread. The way it is now it blocks while
-//one client access the server, ex if it transferres a big file the
-//client have to wait real long before it gets any response.
     this.start();
   }
 
