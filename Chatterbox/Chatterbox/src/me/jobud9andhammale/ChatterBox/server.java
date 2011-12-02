@@ -12,15 +12,15 @@ import java.net.Socket;
 
 
 public class server {
-
-  protected void start() {
+  public main plugin;
+  protected void start(main plugin) {
+	this.plugin = plugin;
     ServerSocket s;
 
     try {
-      // create the main server socket
       s = new ServerSocket(80);
     } catch (Exception e) {
-      System.out.println("Cannot bind to port! Port is in use!");
+      plugin.toConsole("Cannot bind to port! Port is in use!", 3);
       return;
     }
 
@@ -35,25 +35,24 @@ public class server {
           str = in.readLine();
         out.println("HTTP/1.0 200 OK");
         out.println("Content-Type: text/html");
-        out.println("Server: Bot");
+        out.println("Server: Chatterbox");
         out.println("");
         try{
-        	  FileInputStream fstream = new FileInputStream("textfile.txt");
+        	  FileInputStream fstream = new FileInputStream("index.htm");
         	  DataInputStream input = new DataInputStream(fstream);
         	  BufferedReader br = new BufferedReader(new InputStreamReader(input));
         	  String strLine;
         	  while ((strLine = br.readLine()) != null)   {
-        	  System.out.println (strLine);
+        out.println (strLine);
         	  }
         	  input.close();
         	    }catch (Exception e){
         	  System.err.println("Error: " + e.getMessage());
         	  }
-        out.println("<H1>Welcome to the Ultra Mini-WebServer</H2>");
         out.flush();
         remote.close();
       } catch (Exception e) {
-        System.out.println("Error: " + e);
+        plugin.toConsole("Error: " + e, 2);
       }
     }
   }
