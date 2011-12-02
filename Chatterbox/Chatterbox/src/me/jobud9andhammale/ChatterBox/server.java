@@ -9,19 +9,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-//file: server.java
-//the real (http) serverclass
-//it extends thread so the server is run in a different
-//thread than the gui, that is to make it responsive.
-//it's really just a macho coding thing.
-public class server
-    extends Thread {
+public class server extends Thread {
 
-//the constructor method
-//the parameters it takes is what port to bind to, the default tcp port
-//for a httpserver is port 80. the other parameter is a reference to
-//the gui, this is to pass messages to our nice interface
-  public server(int listen_port, webserver_starter to_send_message_to) {
+	public server(int listen_port, webserver_starter to_send_message_to) {
     message_to = to_send_message_to;
     port = listen_port;
     this.start();
@@ -144,14 +134,6 @@ public class server
     FileInputStream requestedfile = null;
 
     try {
-      //NOTE that there are several security consideration when passing
-      //the untrusted string "path" to FileInputStream.
-      //You can access all files the current user has read access to!!!
-      //current user is the user running the javaprogram.
-      //you can do this by passing "../" in the url or specify absoulute path
-      //or change drive (win)
-
-      //try to open the file,
       requestedfile = new FileInputStream(path);
     }
     catch (Exception e) {
@@ -230,7 +212,7 @@ public class server
 
     s = s + "\r\n"; //other header fields,
     s = s + "Connection: close\r\n"; //we can't handle persistent connections
-    s = s + "Server: SimpleHTTPtutorial v0\r\n"; //server name
+    s = s + "Server: Chatterbox for Minecraft\r\n"; //server name
 
     //Construct the right Content-Type for the header.
     //This is so the browser knows what to do with the
@@ -262,4 +244,4 @@ public class server
     return s;
   }
 
-} //class phhew caffeine yes please!
+}
