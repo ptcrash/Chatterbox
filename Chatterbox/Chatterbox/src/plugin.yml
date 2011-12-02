@@ -1,3 +1,7 @@
 name: ChatterBox
 version: 0.3.1
 main: me.jobud9andhammale.ChatterBox.main
+commands:
+   cb:
+      description: main command.
+      usage: /<command>
