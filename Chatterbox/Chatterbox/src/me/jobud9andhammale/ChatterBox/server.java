@@ -9,12 +9,10 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class server {
-    public main plugin;
+public class server implements Runnable{
+	public void run() {
 
-    protected void start(main plugin) {
-        this.plugin = plugin;
-        ServerSocket s;
+     	ServerSocket s;
         try {
             s = new ServerSocket(80);
         } catch (Exception e) {
@@ -50,14 +48,9 @@ public class server {
                 out.flush();
                 remote.close();
             } catch (Exception e) {
-                plugin.toConsole("Error: " + e, 2);
+                plugin.toConsole("Error: " + e, 3);
             }
         }
-    }
-
-    public server(main m) {
-
-        this.start(m);
-
-    }
+		
+	}
 }

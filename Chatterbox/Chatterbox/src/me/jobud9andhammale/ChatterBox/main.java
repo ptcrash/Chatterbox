@@ -9,8 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class main extends JavaPlugin {
     public String PluginDirPath;
     public File ConfigFile;
-    public server webserver;
     final ChatHandler playerListener = new ChatHandler(this);
+    
+    
 
     public void toConsole(String msg, int type) {
         Logger log = Logger.getLogger("Minecraft");
@@ -30,13 +31,14 @@ public class main extends JavaPlugin {
     public void onEnable() {
         this.PluginDirPath = this.getDataFolder().getAbsolutePath()+File.separator;
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
-        this.webserver = new server(this);
+        Thread t1 = new Thread(new server());
+        t1.start();
         PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener,
-                Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
         this.toConsole("Enabled without error!", 1);
     }
 
     public void onDisable() {
+    	this.toConsole("Disabled", 1);
     }
 }
