@@ -9,21 +9,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class main extends JavaPlugin {
     public String PluginDirPath;
     public File ConfigFile;
+    public configHandler config;
     final ChatHandler playerListener = new ChatHandler(this);
-    
-    
 
     public void toConsole(String msg, int type) {
         Logger log = Logger.getLogger("Minecraft");
         switch (type) {
         case 1:
-            log.info("[Wampom] " + msg);
+            log.info("[Chatterbox] " + msg);
             break;
         case 2:
-            log.warning("[Wampom] " + msg);
+            log.warning("[Chatterbox] " + msg);
             break;
         case 3:
-            log.severe("[Wampom] " + msg);
+            log.severe("[Chatterbox] " + msg);
             break;
         }
     }
@@ -31,14 +30,23 @@ public class main extends JavaPlugin {
     public void onEnable() {
         this.PluginDirPath = this.getDataFolder().getAbsolutePath()+File.separator;
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
-        Thread t1 = new Thread(new server());
+        this.config = new configHandler(this.ConfigFile);
+        
+        Thread t1 = new Thread(new server(this));
         t1.start();
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
-        this.toConsole("Enabled without error!", 1);
+        
+        if(this.config.getBool("webserver.debug_mode")==true){
+        	this.toConsole("Enabled, but in debug mode! this may cause unwanted spaming of console", 2);
+        }
+        else{
+        	this.toConsole("Enabled without error!", 1);
+        }
     }
-
     public void onDisable() {
     	this.toConsole("Disabled", 1);
     }
+    
+    
 }

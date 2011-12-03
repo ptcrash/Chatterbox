@@ -10,11 +10,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class server implements Runnable{
+
+    public final main plugin;
+
+	public server(main plugin) {
+		this.plugin = plugin;
+	}
+
 	public void run() {
 
      	ServerSocket s;
         try {
-            s = new ServerSocket(80);
+            s = new ServerSocket(plugin.config.getInt("webserver.port"));
         } catch (Exception e) {
             plugin.toConsole("Cannot bind to port! Port is in use!", 3);
             return;
@@ -31,6 +38,7 @@ public class server implements Runnable{
                 out.println("HTTP/1.0 200 OK");
                 out.println("Content-Type: text/html");
                 out.println("Server: Chatterbox");
+                out.println("Connection: Close");
                 out.println("");
                 try {
                     FileInputStream fstream = new FileInputStream(plugin.PluginDirPath +"html"+File.separator+"index.htm");
@@ -51,6 +59,6 @@ public class server implements Runnable{
                 plugin.toConsole("Error: " + e, 3);
             }
         }
-		
+
 	}
 }
