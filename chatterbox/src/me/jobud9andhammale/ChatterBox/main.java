@@ -2,6 +2,10 @@ package me.jobud9andhammale.ChatterBox;
 
 import java.io.File;
 import java.util.logging.Logger;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -37,6 +41,7 @@ public class main extends JavaPlugin {
         
         Thread t1 = new Thread(new server(this));
         t1.start();
+        
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
         
@@ -50,6 +55,26 @@ public class main extends JavaPlugin {
     public void onDisable() {
     	this.toConsole("Disabled", 1);
     }
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if (cmd.getName().equalsIgnoreCase("cb")){
+		    if(args.length != 0){
+		        if(args[0].matches("-v")){
+			        sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
+		        }
+		        else if(args[0].matches("help")) {
+		    	    sender.sendMessage(ChatColor.RED + "The help System is not set up yet :(");
+		        }
+		        return true;
+		    }
+	    	else{
+	    		sender.sendMessage(ChatColor.RED + "Insuficient amount of arguments.");
+	    		return true;
+	    	}
+
+	    }
+	    return false;
+    }
+
     
     
 }
