@@ -37,7 +37,7 @@ public class configHandler{
 	}
 	
 	public int getInt(String key){
-		return this.config.getInt(key, (Integer) this.configDefaults.get(key));
+		return this.config.getInt(key, (Integer)     this.configDefaults.get(key));
 	}
 	public boolean getBool(String key){
 		return this.config.getBoolean(key, (Boolean) this.configDefaults.get(key));

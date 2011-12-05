@@ -39,7 +39,9 @@ public class main extends JavaPlugin {
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
         this.config = new configHandler(this.ConfigFile);
         Thread t1 = new Thread(new server(this));
+        Thread t2 = new Thread(new fileHandler(this));
         t1.start();
+        t2.start();
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
         this.toConsole("Enabled!", 1);
