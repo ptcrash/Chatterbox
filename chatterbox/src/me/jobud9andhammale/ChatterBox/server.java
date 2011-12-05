@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,12 +19,13 @@ public class server implements Runnable{
 	}
 
 	public void run() {
-
+		int port = plugin.config.getInt("webserver.port");
+		boolean debugmode = plugin.config.getBool("webserver.debug_mode");
      	ServerSocket s;
         try {
-            s = new ServerSocket(plugin.config.getInt("webserver.port"));
+            s = new ServerSocket(port);
         } catch (Exception e) {
-            plugin.toConsole("Cannot bind to port! Port is in use!", 3);
+            plugin.toConsole("Cannot bind to port "+port+"! Port is in use!", 3);
             return;
         }
         for (;;) {
@@ -32,6 +34,10 @@ public class server implements Runnable{
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         remote.getInputStream()));
                 PrintWriter out = new PrintWriter(remote.getOutputStream());
+            	if(debugmode){
+            		InetAddress IP = remote.getLocalAddress();
+            		plugin.toConsole(IP+" is connecting to webserver", 1);
+            	}
                 String str = ".";
                 while (!str.equals(""))
                     str = in.readLine();
@@ -56,9 +62,10 @@ public class server implements Runnable{
                 out.flush();
                 remote.close();
             } catch (Exception e) {
-                plugin.toConsole("Error: " + e, 3);
+            	if(debugmode){
+            		plugin.toConsole("Error: " + e, 3);
+            	}
             }
         }
-
 	}
 }

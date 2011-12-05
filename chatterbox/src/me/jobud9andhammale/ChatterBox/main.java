@@ -38,27 +38,21 @@ public class main extends JavaPlugin {
         this.PluginDirPath = this.getDataFolder().getAbsolutePath()+File.separator;
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
         this.config = new configHandler(this.ConfigFile);
-        
         Thread t1 = new Thread(new server(this));
         t1.start();
-        
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
-        
-        if(this.config.getBool("webserver.debug_mode")==true){
-        	this.toConsole("Enabled, but in debug mode! this may cause unwanted spaming of console", 2);
-        }
-        else{
-        	this.toConsole("Enabled without error!", 1);
-        }
+        this.toConsole("Enabled!", 1);
     }
+    
     public void onDisable() {
     	this.toConsole("Disabled", 1);
     }
+    
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	    if (cmd.getName().equalsIgnoreCase("cb")){
 		    if(args.length != 0){
-		        if(args[0].matches("-v")){
+		        if(args[0].matches("about")){
 			        sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
 		        }
 		        else if(args[0].matches("help")) {
