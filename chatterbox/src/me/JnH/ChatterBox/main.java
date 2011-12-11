@@ -1,4 +1,4 @@
-package me.jobud9andhammale.ChatterBox;
+package me.JnH.ChatterBox;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -39,7 +39,7 @@ public class main extends JavaPlugin {
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
         this.config = new configHandler(this.ConfigFile);
         Thread t1 = new Thread(new server(this));
-        Thread t2 = new Thread(new fileHandler(this));
+        Thread t2 = new Thread(new FileHandler(this));
         t1.start();
         t2.start();
         PluginManager pm = this.getServer().getPluginManager();
@@ -56,6 +56,15 @@ public class main extends JavaPlugin {
 		    if(args.length != 0){
 		        if(args[0].matches("about")){
 			        sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
+		        }
+		        else if(args[0].matches("-r")){
+		        	if(args[1].matches("config")){
+		        		this.reloadConfig();
+		        		sender.sendMessage(ChatColor.GREEN+"Config Reloaded");
+		        	}
+		        	else{
+		        		this.getServer().reload();
+		        	}
 		        }
 		        else if(args[0].matches("help")) {
 		    	    sender.sendMessage(ChatColor.RED + "The help System is not set up yet :(");

@@ -1,4 +1,4 @@
-package me.jobud9andhammale.ChatterBox;
+package me.JnH.ChatterBox;
 
 import java.io.File;
 import java.io.IOException;
