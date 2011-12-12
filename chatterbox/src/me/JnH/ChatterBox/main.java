@@ -57,15 +57,6 @@ public class main extends JavaPlugin {
 		        if(args[0].matches("about")){
 			        sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
 		        }
-		        else if(args[0].matches("-r")){
-		        	if(args[1].matches("config")){
-		        		this.reloadConfig();
-		        		sender.sendMessage(ChatColor.GREEN+"Config Reloaded");
-		        	}
-		        	else{
-		        		this.getServer().reload();
-		        	}
-		        }
 		        else if(args[0].matches("help")) {
 		    	    sender.sendMessage(ChatColor.RED + "The help System is not set up yet :(");
 		        }

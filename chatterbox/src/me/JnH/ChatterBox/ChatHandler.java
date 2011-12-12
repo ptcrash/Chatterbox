@@ -9,9 +9,8 @@ public class ChatHandler extends PlayerListener {
 	
 	public ChatHandler(main plugin) {
 		this.plugin = plugin;
-		
 	}
 	public void onPlayerChat(PlayerChatEvent e){
-		plugin.toConsole("you chatted", 1);
+		plugin.toConsole(e.getPlayer().getName()+" has chatted", 1);
 	}
 }
