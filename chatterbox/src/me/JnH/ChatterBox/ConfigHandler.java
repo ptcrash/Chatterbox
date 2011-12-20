@@ -44,5 +44,4 @@ public class ConfigHandler{
 	public boolean getBool(String key){
 		return this.config.getBoolean(key, (Boolean) this.configDefaults.get(key));
 	}
-
 }

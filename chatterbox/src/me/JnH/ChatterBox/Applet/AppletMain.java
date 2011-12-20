@@ -2,6 +2,7 @@ package me.JnH.ChatterBox.Applet;
 
 import javax.swing.JApplet;
 
+@SuppressWarnings("serial")
 public class AppletMain extends JApplet{
 
 	    public void init() {
