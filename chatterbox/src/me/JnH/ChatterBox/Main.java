@@ -18,8 +18,8 @@ public class Main extends JavaPlugin {
     public PluginDescriptionFile pdfile;
     final ChatHandler playerListener = new ChatHandler(this);
     public Thread t1 = new Thread(new FileServer(this));
-    public Thread t2 = new Thread(new FileHandler(this));
-    public Thread t3 = new Thread(new PostServer(this));
+    public Thread t2 = new Thread(new PostServer(this));
+    public Thread t3 = new Thread(new FileInstaller(this));
 
     public void toConsole(String msg, int type) {
         Logger log = Logger.getLogger("Minecraft");

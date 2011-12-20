@@ -1,9 +1,9 @@
 package me.JnH.ChatterBox;
 
-public class FileHandler implements Runnable{
+public class FileInstaller implements Runnable{
 	public final Main plugin;
 	
-	public FileHandler(Main plugin) {
+	public FileInstaller(Main plugin) {
 		this.plugin = plugin;
 	}
 	public void run() {
