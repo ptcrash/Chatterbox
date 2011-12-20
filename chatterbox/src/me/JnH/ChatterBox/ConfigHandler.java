@@ -5,17 +5,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class configHandler{
+public class ConfigHandler{
 	
 	private YamlConfiguration config;
 	
 	private HashMap<String, Object> configDefaults = new HashMap<String, Object>();
 	
-	public configHandler(File ConfigFile){
+	public ConfigHandler(File ConfigFile){
 		this.config = new YamlConfiguration();
 		
 		this.configDefaults.put("webserver.port", 80);
+		this.configDefaults.put("webserver.jarport", 16294);
 		this.configDefaults.put("webserver.debug_mode", false);
+		
 		
 		if(ConfigFile.exists()== false){
 			for(String key: this.configDefaults.keySet()){

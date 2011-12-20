@@ -1,6 +1,6 @@
 name: ChatterBox
 version: 0.3.1
-main: me.JnH.ChatterBox.main
+main: me.JnH.ChatterBox.Main
 commands:
    cb:
       description:

@@ -5,9 +5,9 @@ import org.bukkit.event.player.PlayerListener;
 
 public class ChatHandler extends PlayerListener {
 	
-	public final main plugin;
+	public final Main plugin;
 	
-	public ChatHandler(main plugin) {
+	public ChatHandler(Main plugin) {
 		this.plugin = plugin;
 	}
 	public void onPlayerChat(PlayerChatEvent e){

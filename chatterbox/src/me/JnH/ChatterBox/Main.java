@@ -11,12 +11,15 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class main extends JavaPlugin {
+public class Main extends JavaPlugin {
     public String PluginDirPath;
     public File ConfigFile;
-    public configHandler config;
+    public ConfigHandler config;
     public PluginDescriptionFile pdfile;
     final ChatHandler playerListener = new ChatHandler(this);
+    public Thread t1 = new Thread(new FileServer(this));
+    public Thread t2 = new Thread(new FileHandler(this));
+    public Thread t3 = new Thread(new PostServer(this));
 
     public void toConsole(String msg, int type) {
         Logger log = Logger.getLogger("Minecraft");
@@ -37,11 +40,12 @@ public class main extends JavaPlugin {
     	this.pdfile = this.getDescription();
         this.PluginDirPath = this.getDataFolder().getAbsolutePath()+File.separator;
         this.ConfigFile = new File(this.PluginDirPath + File.separator + "config.yml");
-        this.config = new configHandler(this.ConfigFile);
-        Thread t1 = new Thread(new server(this));
-        Thread t2 = new Thread(new FileHandler(this));
+        this.config = new ConfigHandler(this.ConfigFile);
+
         t1.start();
         t2.start();
+        t3.start();
+        
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
         this.toConsole("Enabled!", 1);

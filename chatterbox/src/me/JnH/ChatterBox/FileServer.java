@@ -5,16 +5,15 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class server implements Runnable{
+public class FileServer implements Runnable{
 
-	public final main plugin;
+	public final Main plugin;
 
-	public server(main plugin) {
+	public FileServer(Main plugin) {
 		this.plugin = plugin;
 
 	}
@@ -26,27 +25,24 @@ public class server implements Runnable{
 		      serversocket = new ServerSocket(port);
 		    }
 		    catch (Exception e) {
-		      plugin.toConsole("\nFatal Error:" + e.getMessage(),2);
+		      plugin.toConsole("Cannot bind to port"+port+"! It is allready in use.",3);
 		      return;
 		    }
 		    while (true) {
 		      try {
 		        Socket connectionsocket = serversocket.accept();
-		        BufferedReader input =
-		            new BufferedReader(new InputStreamReader(connectionsocket.
-		            getInputStream()));
-		        DataOutputStream output =
-		            new DataOutputStream(connectionsocket.getOutputStream());
+		        BufferedReader input = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
+		        DataOutputStream output = new DataOutputStream(connectionsocket.getOutputStream());
 		        http_handler(input, output);
 		      }
 		      catch (Exception e) {
-		        plugin.toConsole("\nError:" + e.getMessage(),2);
+		        plugin.toConsole("Error:" + e.getMessage(),2);
 		      }
 
 		    }
 		  }
 
-		  private void http_handler(BufferedReader input, DataOutputStream output) throws IOException {
+		  private void http_handler(BufferedReader input, DataOutputStream output) {
 		    String path = new String();
 		    try {
 		      String tmp = input.readLine();
@@ -66,7 +62,7 @@ public class server implements Runnable{
 		      path = tmp2.substring(start + 2, end);
 		    }
 		    catch (Exception e) {
-		      plugin.toConsole("errorr" + e.getMessage(),2);
+		      plugin.toConsole("error" + e.getMessage(),2);
 		    }
 
 		    FileInputStream requestedfile = null;
@@ -133,8 +129,11 @@ public class server implements Runnable{
 		      case 1:
 		        s = s + "Content-Type: image/png\r\n";
 		        break;
+		      case 2:
+		    	s = s + "Content-Type: application/x-java-applet\r\n";
+		    	break;
 		      case 3:
-		    	s = s + "Content-Type: image/vnd.microsoft.icon";
+		    	s = s + "Content-Type: image/vnd.microsoft.icon\r\n";
 		      default:
 		        s = s + "Content-Type: text/html\r\n";
 		        break;
