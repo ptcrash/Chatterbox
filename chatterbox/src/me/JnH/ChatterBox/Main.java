@@ -11,6 +11,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.randomappdev.pluginstats.Ping;
+
 public class Main extends JavaPlugin {
     public String PluginDirPath;
     public File ConfigFile;
@@ -19,8 +21,6 @@ public class Main extends JavaPlugin {
     final ChatHandler playerListener = new ChatHandler(this);
     public Thread t1 = new Thread(new FileServer(this));
     public Thread t2 = new Thread(new CommandServer(this));
-    public Thread t3 = new Thread(new CommandHandler(this));
-    public Thread t4 = new Thread(new FileInstaller(this));
 
     public void toConsole(String msg, int type) {
         Logger log = Logger.getLogger("Minecraft");
@@ -45,11 +45,14 @@ public class Main extends JavaPlugin {
 
         t1.start();
         t2.start();
-        t3.start();
-        t4.start();
+        
+        Ping ping = new Ping();
+        ping.init(this);
         
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
         this.toConsole("Enabled!", 1);
     }
     
@@ -60,16 +63,30 @@ public class Main extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	    if (cmd.getName().equalsIgnoreCase("cb")){
 		    if(args.length != 0){
-		        if(args[0].matches("about")){
-			        sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
+		        if(args[0].matches("help")){
+		        	sender.sendMessage(ChatColor.GREEN+"[required param] {optional param}");
+			        sender.sendMessage(ChatColor.GREEN+" Command                   Action");
+			        sender.sendMessage(ChatColor.BLUE +" /about                    Shows plugin version");
+			        sender.sendMessage(ChatColor.BLUE +" /register [user] [pass]   Registers your chaterbox account");
 		        }
-		        else if(args[0].matches("help")) {
-		    	    sender.sendMessage(ChatColor.RED + "The help System is not set up yet :(");
+		        else if(args[0].matches("about")){
+		        	sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
+		        }
+		        else if(args[0].matches("register")){
+		        	if(args.length == 1){
+		        		
+		        	}
+		        	else if(args.length != 3){
+		        		
+		        	}
+		        	else{
+		        		
+		        	}
 		        }
 		        return true;
 		    }
 	    	else{
-	    		sender.sendMessage(ChatColor.RED + "Insuficient amount of arguments.");
+	    		sender.sendMessage(ChatColor.GREEN + this.pdfile.getName()+" version "+this.pdfile.getVersion());
 	    		return true;
 	    	}
 

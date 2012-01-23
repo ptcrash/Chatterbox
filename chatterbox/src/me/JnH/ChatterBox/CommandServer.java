@@ -1,6 +1,8 @@
 package me.JnH.ChatterBox;
 
-import java.net.ServerSocket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
 public class CommandServer implements Runnable {
 
@@ -11,23 +13,29 @@ public class CommandServer implements Runnable {
 
 	}
 	public void run() {
-		int port = plugin.config.getInt("webserver.jarport");
-		ServerSocket sock;
+		int port = plugin.config.getInt("webserver.apiport");
 		try {
-	      sock = new ServerSocket(port);
+			plugin.toConsole("Jarserver running on port "+port, 1);
 	    }
 	    catch (Exception e) {
-	      plugin.toConsole("Cannot Bind to port:" + e.getMessage(),2);
-	      return;
+	    	plugin.toConsole("Cannot Bind to port: "+port+"" + e.getMessage(),2);
+	    	return;
 	    }
-	      try {
-	    	  while(true){
-	    		  sock.accept();
-	    		  plugin.toConsole(sock.getInetAddress()+" has connected!", 1);
-	    	  }
-	      	}
-	      catch (Exception e) {
-	      	plugin.toConsole("\nError:" + e.getMessage(),2);
-	   	}
-	}	
+		
+		try{
+			Socket socket = new Socket("localhost", port);
+			BufferedReader read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String line = read.readLine();
+			while(line != null){
+				if(line.startsWith("$")){
+					String msg = line.substring(1);
+					plugin.toConsole(msg,1);
+			     }
+			line = read.readLine();
+			}
+		}
+		catch(Exception e){
+			plugin.toConsole("Error: "+e.getMessage(), 1);
+		}
+	}
 }

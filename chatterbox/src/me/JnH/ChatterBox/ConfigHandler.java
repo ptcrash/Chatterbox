@@ -6,18 +6,15 @@ import java.util.HashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigHandler{
-	
 	private YamlConfiguration config;
-	
 	private HashMap<String, Object> configDefaults = new HashMap<String, Object>();
-	
 	public ConfigHandler(File ConfigFile){
 		this.config = new YamlConfiguration();
 		
 		this.configDefaults.put("webserver.port", 80);
-		this.configDefaults.put("webserver.jarport", 16294);
+		this.configDefaults.put("webserver.apiport", 25573);
 		this.configDefaults.put("webserver.debug_mode", false);
-		
+		this.configDefaults.put("General.stats", true);
 		
 		if(ConfigFile.exists()== false){
 			for(String key: this.configDefaults.keySet()){
@@ -25,14 +22,16 @@ public class ConfigHandler{
 			}
 			try {
 				this.config.save(ConfigFile);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		else{
 			try {
 				this.config.load(ConfigFile);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
