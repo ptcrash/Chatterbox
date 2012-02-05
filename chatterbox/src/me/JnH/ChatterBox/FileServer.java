@@ -11,6 +11,7 @@ import java.net.Socket;
 
 public class FileServer implements Runnable{
 	public final Main plugin;
+	boolean run = true;
 	public FileServer(Main plugin) {
 		this.plugin = plugin;
 	}
@@ -23,17 +24,18 @@ public class FileServer implements Runnable{
 		}
 		catch (Exception e) {
 			plugin.toConsole("Cannot bind to port"+port+"! It is allready in use.",3);
-			return;
+			plugin.toConsole("shutting down webserver! please free port "+port+" or change the selected port in the config!", 3);
+			run = false;
 		}
-		while (true) {
+		while (run) {
 			try {
 				Socket connectionsocket = serversocket.accept();
 				http_handler(new BufferedReader(new InputStreamReader(connectionsocket.getInputStream())), new DataOutputStream(connectionsocket.getOutputStream()));
 			}
 			catch (Exception e) {
 				plugin.toConsole("Error:" + e.getMessage(),2);
+				run = false;
 			}
-
 		}
 	}
 
@@ -64,8 +66,8 @@ public class FileServer implements Runnable{
 		FileInputStream requestedfile = null;
 
 		try {
-			if(path.matches("applet.class")|| path.matches("dirt.png") ||path.matches("stone.png") || path.matches("grass.png") || path.matches("banner.png")||
-			   path.matches("index.html")  || path.matches("favicon.ico")){
+			if(path.matches("applet.class")|| path.matches("applet$EventHandler.class") || path.matches("dirt.png") || path.matches("stone.png") || path.matches("grass.png")
+			|| path.matches("banner.png")||path.matches("grass.png") || path.matches("banner.png") || path.matches("index.html") || path.matches("favicon.ico")){
 				requestedfile = new FileInputStream(plugin.PluginDirPath+"html"+File.separator+path);
 			}
 			else{
@@ -73,7 +75,7 @@ public class FileServer implements Runnable{
 			}
 
 		} catch (FileNotFoundException e) {
-			plugin.toConsole("could not find file!", 1);
+			plugin.toConsole("could not find file \""+path+"\" please make sure it is there!", 2);
 		}
 
 		try {
@@ -94,6 +96,9 @@ public class FileServer implements Runnable{
 				file_type = 3;
 			}
 			else if(path.matches("applet.class")){
+				file_type = 2;
+			}
+			else if(path.matches("applet$EventHandler.class")){
 				file_type = 2;
 			}
 			else{

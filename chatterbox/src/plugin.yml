@@ -5,3 +5,7 @@ commands:
    cb:
       description:
       usage: |
+permissions:
+    cbox.canmute:
+        description: Allows you to mute a player
+        default: op
