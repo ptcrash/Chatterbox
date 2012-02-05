@@ -1,4 +1,4 @@
-package me.JnH.ChatterBox;
+package com.jobud9.Chatterbox;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

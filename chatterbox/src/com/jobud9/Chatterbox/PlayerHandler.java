@@ -1,4 +1,4 @@
-package me.JnH.ChatterBox;
+package com.jobud9.Chatterbox;
 
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;

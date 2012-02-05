@@ -1,4 +1,4 @@
-package me.JnH.ChatterBox.Applet;
+package com.jobud9.Chatterbox.Applet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
