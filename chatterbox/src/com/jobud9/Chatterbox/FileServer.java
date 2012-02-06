@@ -5,41 +5,48 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class FileServer implements Runnable{
+	private ServerSocket serversocket = null;
 	public final Main plugin;
-	boolean run = true;
 	public FileServer(Main plugin) {
 		this.plugin = plugin;
 	}
 
-	public void run() {
+	public void run(){
 		int port = plugin.config.getInt("webserver.port");
-		ServerSocket serversocket = null;
 		try {
 			serversocket = new ServerSocket(port);
+			plugin.toConsole("Server port bound!", 1);
 		}
-		catch (Exception e) {
+		catch (Exception e){
 			plugin.toConsole("Cannot bind to port"+port+"! It is allready in use.",3);
 			plugin.toConsole("shutting down webserver! please free port "+port+" or change the selected port in the config!", 3);
-			run = false;
 		}
-		while (run) {
+		while (true) {
 			try {
 				Socket connectionsocket = serversocket.accept();
 				http_handler(new BufferedReader(new InputStreamReader(connectionsocket.getInputStream())), new DataOutputStream(connectionsocket.getOutputStream()));
 			}
 			catch (Exception e) {
 				plugin.toConsole("Error:" + e.getMessage(),2);
-				run = false;
 			}
 		}
 	}
+	public void stop(){
+		try {
+			serversocket.close();
+		} catch (IOException e) {
+			plugin.toConsole("Error! cannot close the webserver!", 2);
+			e.printStackTrace();
+		}
+	}
 
-	private void http_handler(BufferedReader input, DataOutputStream output) {
+	private void http_handler(BufferedReader input, DataOutputStream output){
 		String path = new String();
 		try {
 			String tmp = input.readLine();
@@ -68,10 +75,10 @@ public class FileServer implements Runnable{
 		try {
 			if(path.matches("applet.class")|| path.matches("applet$EventHandler.class") || path.matches("dirt.png") || path.matches("stone.png") || path.matches("grass.png")
 			|| path.matches("banner.png")||path.matches("grass.png") || path.matches("banner.png") || path.matches("index.html") || path.matches("favicon.ico")){
-				requestedfile = new FileInputStream(plugin.PluginDirPath+"html"+File.separator+path);
+				requestedfile = new FileInputStream("plugins"+File.separator+"Chatterbox"+"html"+File.separator+path);
 			}
 			else{
-				requestedfile = new FileInputStream(plugin.PluginDirPath+"html"+File.separator+"index.htm");
+				requestedfile = new FileInputStream("plugins"+File.separator+"Chatterbox"+"html"+File.separator+"index.htm");
 			}
 
 		} catch (FileNotFoundException e) {

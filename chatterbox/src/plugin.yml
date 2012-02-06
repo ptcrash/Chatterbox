@@ -1,8 +1,11 @@
 name: ChatterBox
 version: 0.3.1
-main: me.JnH.ChatterBox.Main
+main: com.jobud9.Chatterbox.Main
 commands:
    cb:
+      description:
+      usage: |
+   register:
       description:
       usage: |
 permissions:

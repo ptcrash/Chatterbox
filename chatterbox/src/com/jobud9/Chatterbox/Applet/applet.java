@@ -1,9 +1,8 @@
-package com.jobud9.Chatterbox.Applet;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -23,16 +22,27 @@ public class applet extends JApplet {
 	public void chatadd(String who, String txt){
 		chat.append("["+who+"] "+txt+"\n");
 	}
-	public void chatToApplet(){
+	public void AppletConnect(){
 		chat.setText(null);
-		chatadd("Server","connecting... connected!");
+		chatadd("You","connecting...");
+		try {
+			Socket sock = new Socket("localhost",25573);
+			chatadd("You","connected!");
+			chatadd("You","please enter login credentials");
+		} catch (UnknownHostException e) {
+			chatadd("You","Can't connect to server! Unknown Host Exception!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			chatadd("You","Can't connect to server! Socket I/O Exception");
+			e.printStackTrace();
+		}
 	}
 	public boolean verifyConnect(String user, String pass){
 		if(user.equals("jobud9")&&pass.equals("hi")){
 			return true;
 		}
 		else{
-			return true;
+			return false;
 		}
 	}
 	public void enablelogin(boolean bool){
@@ -47,15 +57,7 @@ public class applet extends JApplet {
 	}
 	public void init() {
 		initComponents();
-		chatToApplet();
-
-		try{
-			InetAddress IP = InetAddress.getLocalHost();
-			//Socket sock = Socket(IP, 7763);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		AppletConnect();
 	}
 	private void initComponents() {
 		jLabel1 = new JLabel();
@@ -66,7 +68,7 @@ public class applet extends JApplet {
 		loginbtn = new JButton();
 		loginbtn.addActionListener(handler);
 		jScrollPane1 = new JScrollPane();
-		who = new JList();
+		who = new JList<String>();
 		jScrollPane2 = new JScrollPane();
 		chat = new JTextArea();
 		jLabel3 = new JLabel();
@@ -159,7 +161,7 @@ public class applet extends JApplet {
 	private JPasswordField jPasswordField1;
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
-	private JList who;
+	private JList<String> who;
 	private JTextArea chat;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
@@ -168,14 +170,13 @@ public class applet extends JApplet {
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource().equals(loginbtn)){
 				String user = jTextField1.getText();
-				String pass = jPasswordField1.getPassword().toString();
-				chatadd("server", "logging into server...");
+				String pass = jPasswordField1.getText();
+				chatadd("You", "logging into server...");
 				enablelogin(false);
 				if(verifyConnect(user, pass)){
-					chatadd("server", "connected!");
+					chatadd("You", "logged in! Feel free to chat :)");
 					sendbtn.setEnabled(true);
 					wholist.addAll(getPlayers());
-					wholist.add("etho");
 				}
 				else{
 					chatadd("server", "incorrect username and password!");

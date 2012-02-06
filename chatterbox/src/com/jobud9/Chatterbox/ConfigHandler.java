@@ -12,17 +12,9 @@ public class ConfigHandler{
 	public ConfigHandler(File ConfigFile){
 		this.config = new YamlConfiguration();
 		
-		this.configDefaults.put("general.stats", true);
-		
-		this.configDefaults.put("webserver.port", 80);
+		this.configDefaults.put("webserver.port", 8080);
 		this.configDefaults.put("webserver.apiport", 25573);
 		this.configDefaults.put("webserver.debug_mode", false);
-		
-		this.configDefaults.put("database.type", "mysql");
-		this.configDefaults.put("database.user", "database_username");
-		this.configDefaults.put("database.pass", "database_password");
-		this.configDefaults.put("database.db_uri", "jdbc:mysql:DOMAIN.COM/DATABASE");
-
 		
 		if(ConfigFile.exists()== false){
 			for(String key: this.configDefaults.keySet()){
