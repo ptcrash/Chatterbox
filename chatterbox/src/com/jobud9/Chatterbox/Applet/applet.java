@@ -1,6 +1,13 @@
+package com.jobud9.Chatterbox.Applet;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
@@ -27,8 +34,16 @@ public class applet extends JApplet {
 		chatadd("You","connecting...");
 		try {
 			Socket sock = new Socket("localhost",25573);
-			chatadd("You","connected!");
-			chatadd("You","please enter login credentials");
+			BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+			out.writeChars("REQUEST Connect\r\n");
+			if(in.equals("REQUEST Confirm")){
+				chatadd("You","connected!");
+				chatadd("You","please enter login credentials");
+			}
+			else{
+				chatadd("You","You're IP has been banned! Sorry!");
+			}
 		} catch (UnknownHostException e) {
 			chatadd("You","Can't connect to server! Unknown Host Exception!");
 			e.printStackTrace();
@@ -36,6 +51,7 @@ public class applet extends JApplet {
 			chatadd("You","Can't connect to server! Socket I/O Exception");
 			e.printStackTrace();
 		}
+		
 	}
 	public boolean verifyConnect(String user, String pass){
 		if(user.equals("jobud9")&&pass.equals("hi")){
@@ -68,7 +84,7 @@ public class applet extends JApplet {
 		loginbtn = new JButton();
 		loginbtn.addActionListener(handler);
 		jScrollPane1 = new JScrollPane();
-		who = new JList<String>();
+		who = new JList();
 		jScrollPane2 = new JScrollPane();
 		chat = new JTextArea();
 		jLabel3 = new JLabel();
@@ -161,7 +177,7 @@ public class applet extends JApplet {
 	private JPasswordField jPasswordField1;
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
-	private JList<String> who;
+	private JList who;
 	private JTextArea chat;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
@@ -170,6 +186,7 @@ public class applet extends JApplet {
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource().equals(loginbtn)){
 				String user = jTextField1.getText();
+				@SuppressWarnings("deprecation")
 				String pass = jPasswordField1.getText();
 				chatadd("You", "logging into server...");
 				enablelogin(false);
